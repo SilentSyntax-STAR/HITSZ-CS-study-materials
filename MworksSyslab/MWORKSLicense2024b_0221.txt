@@ -1,0 +1,96 @@
+<bitLicense version="5501">
+  <version>3</version>
+  <sn>CUM24FDQ67VJUNR3</sn>
+  <code>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</code>
+  <description>
+    <snInfo>
+      <product pid="FDYHW-PE" name="MWORKS"/>
+      <controlType>PRE</controlType>
+      <startDate>2025-02-21</startDate>
+      <endDate>2025-03-31</endDate>
+      <activateDate>2025-02-21</activateDate>
+      <operatorType>Download</operatorType>
+      <features>
+        <feature name="MW_Syslab_TyDeepLearning 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_FilterDesignerApp 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_ControlSystemDesignerApp 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_ControlLinearSystemAnalyzerApp 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_SystemIdentificationApp 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_ControlSystem 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_Enterprise 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_PidTunerAPP 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_WindowDesignerAPP 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_CurveFitterAPP 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Standard 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_ExternalC 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Model_Management 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Dynamic_Blocks 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Animation 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_FMI 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Veristand 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Script 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Experiment 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_ControlDesign 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_SysMLToModelica 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Cosim 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_EmCoder 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYTransmission 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYMechanics2D 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYMechanics 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYDriveline 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYMultibody 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYHydraulics 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYHydraulicComponents 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYOilMedia 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYThermalHydraulics 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYThermalHC 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYPneumatics 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYPneumaticComponents 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYGasMedia 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYMotor 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYFuelCellSys 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TADynamics 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TAEconomy 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TAThermalSystem 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TAElectronic 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TAEngine 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TABattery 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYBase 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYModelInterfaces 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_ParameterEstimator 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_SCC 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYFlexbody 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_HILExport 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_ROMBuilder 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYThermoFluidSys 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYMedia 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYElectrical 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYElectricPower 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYThermal 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYContact 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_CAD 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_Enterprise 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Lib_TYDriveline3D 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_ResponseOptimizer 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_SensitivityAnalyzer 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_RealTime 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Sysplr_SlxImport 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_FixedPointToolbox 6001.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_Standard 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_ExternalInterfaces 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_MImport 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TySymbolicMath 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyCurveFitting 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TySignalProcessing 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyCommunication 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyDSPSystem 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyControlSystems 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyStatistics 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyOptimization 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyGlobalOptimization 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+        <feature name="MW_Syslab_TyMachineLearning 12.0" users="unlimited" startTime="2025-02-21" expTime="2025-03-31"/>
+      </features>
+    </snInfo>
+  </description>
+</bitLicense>
+     
