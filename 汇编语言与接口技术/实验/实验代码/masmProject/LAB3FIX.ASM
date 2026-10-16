@@ -1,0 +1,210 @@
+STRLEN MACRO SRC, DEST
+    PUSH AX
+    PUSH CX
+    PUSH SI
+    XOR CX, CX
+    LEA SI, SRC
+SL1:
+    MOV AL, [SI]
+    CMP AL, '$'
+    JE SL2
+    INC CX
+    INC SI
+    JMP SL1
+SL2:
+    MOV DEST, CX
+    POP SI
+    POP CX
+    POP AX
+ENDM
+
+COUNTCHAR MACRO SRC, CHR, DEST
+    PUSH AX
+    PUSH CX
+    PUSH SI
+    XOR CX, CX
+    LEA SI, SRC
+CC1:
+    MOV AL, [SI]
+    CMP AL, '$'
+    JE CC3
+    CMP AL, CHR
+    JNE CC2
+    INC CX
+CC2:
+    INC SI
+    JMP CC1
+CC3:
+    MOV DEST, CX
+    POP SI
+    POP CX
+    POP AX
+ENDM
+
+DATA SEGMENT
+    STRING    DB 'Digital Image Processing','$'
+    LENVAL    DW ?
+    CNTVAL    DW ?
+
+    MSG1      DB 13,10,'Original string: $'
+    MSG2      DB 13,10,'Length: $'
+    MSG3      DB 13,10,'Count of i: $'
+    MSG4      DB 13,10,'Uppercase: $'
+    MSG5      DB 13,10,'Reversed: $'
+    CRLF      DB 13,10,'$'
+DATA ENDS
+
+STACKS SEGMENT STACK
+    DB 100H DUP(?)
+STACKS ENDS
+
+CODE SEGMENT
+    ASSUME CS:CODE, DS:DATA, SS:STACKS
+
+START:
+    MOV AX, DATA
+    MOV DS, AX
+
+    LEA DX, MSG1
+    MOV AH, 09H
+    INT 21H
+    LEA DX, STRING
+    MOV AH, 09H
+    INT 21H
+
+    STRLEN STRING, LENVAL
+
+    LEA DX, MSG2
+    MOV AH, 09H
+    INT 21H
+    MOV AX, LENVAL
+    CALL PRINT_NUM
+
+    COUNTCHAR STRING, 'i', CNTVAL
+
+    LEA DX, MSG3
+    MOV AH, 09H
+    INT 21H
+    MOV AX, CNTVAL
+    CALL PRINT_NUM
+
+    LEA SI, STRING
+    CALL TOUPPER
+
+    LEA DX, MSG4
+    MOV AH, 09H
+    INT 21H
+    LEA DX, STRING
+    MOV AH, 09H
+    INT 21H
+
+    LEA SI, STRING
+    CALL REVERSESTR
+
+    LEA DX, MSG5
+    MOV AH, 09H
+    INT 21H
+    LEA DX, STRING
+    MOV AH, 09H
+    INT 21H
+
+    LEA DX, CRLF
+    MOV AH, 09H
+    INT 21H
+
+    MOV AH, 4CH
+    INT 21H
+
+
+TOUPPER PROC NEAR
+    PUSH AX
+    PUSH SI
+TU1:
+    MOV AL, [SI]
+    CMP AL, '$'
+    JE TU3
+    CMP AL, 'a'
+    JB TU2
+    CMP AL, 'z'
+    JA TU2
+    SUB BYTE PTR [SI], 20H
+TU2:
+    INC SI
+    JMP TU1
+TU3:
+    POP SI
+    POP AX
+    RET
+TOUPPER ENDP
+
+
+REVERSESTR PROC NEAR
+    PUSH AX
+    PUSH CX
+    PUSH SI
+    PUSH DI
+
+    MOV DI, SI
+    XOR CX, CX
+RS1:
+    CMP BYTE PTR [DI], '$'
+    JE RS2
+    INC DI
+    INC CX
+    JMP RS1
+
+RS2:
+    CMP CX, 1
+    JBE RS4
+    DEC DI
+    SHR CX, 1
+
+RS3:
+    MOV AL, [SI]
+    MOV AH, [DI]
+    MOV [SI], AH
+    MOV [DI], AL
+    INC SI
+    DEC DI
+    LOOP RS3
+
+RS4:
+    POP DI
+    POP SI
+    POP CX
+    POP AX
+    RET
+REVERSESTR ENDP
+
+
+PRINT_NUM PROC NEAR
+    PUSH AX
+    PUSH BX
+    PUSH CX
+    PUSH DX
+
+    XOR CX, CX
+    MOV BX, 10
+PN1:
+    XOR DX, DX
+    DIV BX
+    PUSH DX
+    INC CX
+    CMP AX, 0
+    JNE PN1
+PN2:
+    POP DX
+    ADD DL, '0'
+    MOV AH, 02H
+    INT 21H
+    LOOP PN2
+
+    POP DX
+    POP CX
+    POP BX
+    POP AX
+    RET
+PRINT_NUM ENDP
+
+CODE ENDS
+END START
