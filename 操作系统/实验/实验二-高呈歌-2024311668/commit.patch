@@ -1,0 +1,192 @@
+diff --git a/kernel/defs.h b/kernel/defs.h
+index ecea5e6..42d154a 100644
+--- a/kernel/defs.h
++++ b/kernel/defs.h
+@@ -108,7 +108,7 @@ void            sched(void);
+ void            setproc(struct proc*);
+ void            sleep(void*, struct spinlock*);
+ void            userinit(void);
+-int             wait(uint64);
++int             wait(uint64, int);
+ void            wakeup(void*);
+ void            yield(void);
+ int             either_copyout(int user_dst, uint64 dst, void *src, uint64 len);
+diff --git a/kernel/proc.c b/kernel/proc.c
+index 1607145..0b62149 100644
+--- a/kernel/proc.c
++++ b/kernel/proc.c
+@@ -291,6 +291,24 @@ void reparent(struct proc *p) {
+   }
+ }
+ 
++// Convert process state to a readable string.传入进程状态，返回对应的文字
++static char *lab2_proc_state_name(enum procstate state) {
++  switch (state) {
++    case UNUSED:
++      return "unused";
++    case SLEEPING:
++      return "sleep";
++    case RUNNABLE:
++      return "runnable";
++    case RUNNING:
++      return "run";
++    case ZOMBIE:
++      return "zombie";
++    default:
++      return "unknown";
++  }
++}
++
+ // Exit the current process.  Does not return.
+ // An exited process remains in the zombie state
+ // until its parent calls wait().
+@@ -338,6 +356,33 @@ void exit(int status) {
+ 
+   acquire(&p->lock);
+ 
++  // Lab2 Task 1: print parent process information.
++  exit_info("proc %d exit, parent pid %d, name %s, state %s\n", p->pid, original_parent->pid, original_parent->name,
++            lab2_proc_state_name(original_parent->state));
++
++  // Lab2 Task 1: print child process information.
++
++  // Lab2 Task 1: print child process information.
++  int child_num = 0;
++
++  for (struct proc *child = proc; child < &proc[NPROC]; child++) {
++    // First check whether this process is our child.
++    // Do not lock unrelated processes.
++    if (child->parent != p) continue;
++
++    acquire(&child->lock);
++
++    // Recheck and print the child information.
++    if (child->parent == p && child->state != UNUSED) {
++      exit_info("proc %d exit, child %d, pid %d, name %s, state %s\n", p->pid, child_num, child->pid, child->name,
++                lab2_proc_state_name(child->state));
++
++      child_num++;
++    }
++
++    release(&child->lock);
++  }
++
+   // Give any children to init.
+   reparent(p);
+ 
+@@ -356,7 +401,7 @@ void exit(int status) {
+ 
+ // Wait for a child process to exit and return its pid.
+ // Return -1 if this process has no children.
+-int wait(uint64 addr) {
++int wait(uint64 addr, int flags) {
+   struct proc *np;
+   int havekids, pid;
+   struct proc *p = myproc();
+@@ -400,6 +445,12 @@ int wait(uint64 addr) {
+       return -1;
+     }
+ 
++    // Lab2 Task 2: non-blocking wait.
++    if (flags == 1) {
++      release(&p->lock);
++      return -1;
++    }
++
+     // Wait for a child to exit.
+     sleep(p, &p->lock);  // DOC: wait-sleep
+   }
+diff --git a/kernel/syscall.c b/kernel/syscall.c
+index 4c97875..6c3ca16 100644
+--- a/kernel/syscall.c
++++ b/kernel/syscall.c
+@@ -89,6 +89,7 @@ extern uint64 sys_wait(void);
+ extern uint64 sys_write(void);
+ extern uint64 sys_uptime(void);
+ extern uint64 sys_rename(void);
++extern uint64 sys_yield(void);
+ 
+ static uint64 (*syscalls[])(void) = {
+     [SYS_fork] sys_fork,   [SYS_exit] sys_exit,     [SYS_wait] sys_wait,     [SYS_pipe] sys_pipe,
+@@ -96,7 +97,7 @@ static uint64 (*syscalls[])(void) = {
+     [SYS_chdir] sys_chdir, [SYS_dup] sys_dup,       [SYS_getpid] sys_getpid, [SYS_sbrk] sys_sbrk,
+     [SYS_sleep] sys_sleep, [SYS_uptime] sys_uptime, [SYS_open] sys_open,     [SYS_write] sys_write,
+     [SYS_mknod] sys_mknod, [SYS_unlink] sys_unlink, [SYS_link] sys_link,     [SYS_mkdir] sys_mkdir,
+-    [SYS_close] sys_close, [SYS_rename] sys_rename,
++    [SYS_close] sys_close, [SYS_rename] sys_rename, [SYS_yield] sys_yield,
+ };
+ 
+ void syscall(void) {
+diff --git a/kernel/sysproc.c b/kernel/sysproc.c
+index a69071e..8177cb0 100644
+--- a/kernel/sysproc.c
++++ b/kernel/sysproc.c
+@@ -7,6 +7,8 @@
+ #include "spinlock.h"
+ #include "proc.h"
+ 
++extern struct proc proc[NPROC];
++
+ uint64 sys_exit(void) {
+   int n;
+   if (argint(0, &n) < 0) return -1;
+@@ -20,8 +22,15 @@ uint64 sys_fork(void) { return fork(); }
+ 
+ uint64 sys_wait(void) {
+   uint64 p;
+-  if (argaddr(0, &p) < 0) return -1;
+-  return wait(p);
++  int flags;
++
++  if (argaddr(0, &p) < 0)
++    return -1;
++
++  if (argint(1, &flags) < 0)
++    return -1;
++
++  return wait(p, flags);
+ }
+ 
+ uint64 sys_sbrk(void) {
+@@ -81,3 +90,41 @@ uint64 sys_rename(void) {
+   p->name[len] = '\0';
+   return 0;
+ }
++
++// Lab2 Task 3: yield system call.
++uint64
++sys_yield(void)
++{
++  struct proc *p = myproc();
++
++  // 1. Print the address range of the kernel context.
++  printf("Save the context of the process to the memory region from address %p to %p\n",
++         (uint64)&p->context,
++         (uint64)(&p->context + 1));
++
++  // 2. Print current PID and user PC.
++  printf("Current running process pid is %d and user pc is %p\n",
++         p->pid,
++         p->trapframe->epc);
++
++  // 3. Find the next runnable process.
++  for (struct proc *np = proc; np < &proc[NPROC]; np++) {
++    acquire(&np->lock);
++
++    if (np->state == RUNNABLE) {
++      printf("Next runnable process pid is %d and user pc is %p\n",
++             np->pid,
++             np->trapframe->epc);
++
++      release(&np->lock);
++      break;
++    }
++
++    release(&np->lock);
++  }
++
++  // 4. Give up the CPU.
++  yield();
++
++  return 0;
++}

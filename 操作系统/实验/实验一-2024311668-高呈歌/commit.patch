@@ -1,0 +1,286 @@
+diff --git a/Makefile b/Makefile
+index df87a25..819d42c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -152,6 +152,9 @@ UPROGS=\
+ 	$U/_mkdir\
+ 	$U/_rm\
+ 	$U/_sh\
++	$U/_sleep\
++	$U/_pingpong\
++	$U/_find\
+ 	$U/_stressfs\
+ 	$U/_usertests\
+ 	$U/_grind\
+diff --git a/commands.gdb b/commands.gdb
+new file mode 100644
+index 0000000..3fa6307
+--- /dev/null
++++ b/commands.gdb
+@@ -0,0 +1,21 @@
++si
++si
++si
++si
++si
++
++b start.c:58
++c
++p main
++p/x $mepc
++si
++
++b kernel/proc.c:433
++c
++p cpus[$tp]->proc->name
++
++tbreak exec
++disable 2
++c
++finish
++p cpus[$tp]->proc->name
+diff --git a/user/find.c b/user/find.c
+new file mode 100644
+index 0000000..1e61f91
+--- /dev/null
++++ b/user/find.c
+@@ -0,0 +1,140 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "kernel/fs.h"
++#include "user/user.h"
++
++/*
++ * 返回路径最后一部分的名字。
++ * 例如：
++ *   "./a/target" -> "target"
++ *   "./b"        -> "b"
++ */
++static char *base_name(char *path) {
++  char *p;
++
++  p = path + strlen(path);
++
++  while (p > path && *(p - 1) != '/') p--;
++
++  return p;
++}
++
++static void find(char *path, char *target) {
++  char buf[512];
++  char *p;
++
++  int fd;
++
++  struct dirent de;
++  struct stat st;
++
++  // 打开当前路径。
++  if ((fd = open(path, 0)) < 0) {
++    fprintf(2, "find: cannot open %s\n", path);
++    return;
++  }
++
++  // 获得当前路径对应对象的信息。
++  if (fstat(fd, &st) < 0) {
++    fprintf(2, "find: cannot stat %s\n", path);
++    close(fd);
++    return;
++  }
++
++  /*
++   * 无论它是文件还是目录，
++   * 先判断它自己的名字是否匹配。
++   */
++  if (strcmp(base_name(path), target) == 0) {
++    printf("%s\n", path);
++  }
++
++  /*
++   * 只有目录才需要继续向下递归。
++   */
++  if (st.type == T_DIR) {
++    /*
++     * 防止拼接新路径后超出 buf。
++     */
++    if (strlen(path) + 1 + DIRSIZ + 1 > sizeof(buf)) {
++      fprintf(2, "find: path too long\n");
++      close(fd);
++      return;
++    }
++
++    strcpy(buf, path);
++
++    p = buf + strlen(buf);
++
++    /*
++     * 例如：
++     *
++     *   "./a"
++     *
++     * 先变成：
++     *
++     *   "./a/"
++     *
++     * 后面再接目录项名字。
++     */
++    *p++ = '/';
++
++    /*
++     * 每次从目录中读取一个 struct dirent。
++     */
++    while (read(fd, &de, sizeof(de)) == sizeof(de)) {
++      /*
++       * inum == 0 表示这个目录项没有被使用。
++       */
++      if (de.inum == 0) continue;
++
++      /*
++       * 把目录项名字拼到路径后面。
++       */
++      memmove(p, de.name, DIRSIZ);
++
++      /*
++       * xv6 的目录项名字是固定长度，
++       * 所以手动补 '\0'。
++       */
++      p[DIRSIZ] = 0;
++
++      /*
++       * "."  是当前目录
++       * ".." 是父目录
++       *
++       * 不跳过会无限递归。
++       */
++      if (strcmp(p, ".") == 0 || strcmp(p, "..") == 0) {
++        continue;
++      }
++
++      /*
++       * 递归处理这个目录项。
++       *
++       * 如果是普通文件：
++       *   find() 会检查名称然后结束。
++       *
++       * 如果是目录：
++       *   find() 会继续进入下一层。
++       */
++      find(buf, target);
++    }
++  }
++
++  /*
++   * 每层递归结束都必须关闭自己的 fd。
++   */
++  close(fd);
++}
++
++int main(int argc, char *argv[]) {
++  if (argc != 3) {
++    fprintf(2, "usage: find <path> <name>\n");
++    exit(1);
++  }
++
++  find(argv[1], argv[2]);
++
++  exit(0);
++}
+\ No newline at end of file
+diff --git a/user/pingpong.c b/user/pingpong.c
+new file mode 100644
+index 0000000..9536880
+--- /dev/null
++++ b/user/pingpong.c
+@@ -0,0 +1,67 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++int
++main(int argc, char *argv[])
++{
++    int p2c[2];
++    int c2p[2];
++    int parent_pid;
++    int pid;
++    char buf[4];
++
++    if(pipe(p2c) < 0 || pipe(c2p) < 0){
++        fprintf(2, "pipe failed\n");
++        exit(1);
++    }
++
++    parent_pid = getpid();
++
++    pid = fork();//创建子进程
++
++    if(pid < 0){
++        fprintf(2, "fork failed\n");
++        exit(1);
++    }
++
++    if(pid == 0){
++        // child: parent -> child
++        close(p2c[1]);
++
++        // child: child -> parent
++        close(c2p[0]);
++
++        read(p2c[0], buf, 4);
++
++        printf("%d: received ping from pid %d\n",
++               getpid(), parent_pid);
++
++        write(c2p[1], "pong", 4);
++
++        close(p2c[0]);
++        close(c2p[1]);
++
++        exit(0);
++    } else {
++        // parent: parent -> child
++        close(p2c[0]);
++
++        // parent: child -> parent
++        close(c2p[1]);
++
++        write(p2c[1], "ping", 4);
++
++        read(c2p[0], buf, 4);
++
++        printf("%d: received pong from pid %d\n",
++               getpid(), pid);
++
++        close(p2c[1]);
++        close(c2p[0]);
++
++        wait(0);
++
++        exit(0);
++    }
++}
+\ No newline at end of file
+diff --git a/user/sleep.c b/user/sleep.c
+new file mode 100644
+index 0000000..0defb9a
+--- /dev/null
++++ b/user/sleep.c
+@@ -0,0 +1,17 @@
++#include "kernel/types.h"
++#include "kernel/stat.h"
++#include "user/user.h"
++
++int main(int argc, char *argv[]) {
++  // argc:命令行参数的个数
++  if (argc != 2) {
++    fprintf(2, "usage: sleep ticks\n");
++    exit(1);
++  }
++
++  int ticks = atoi(argv[1]);
++  sleep(ticks);
++  printf("Sleep %d\n", ticks);
++  exit(0);
++  
++}
+\ No newline at end of file
